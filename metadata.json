@@ -1,0 +1,6 @@
+{
+  "name": "Stitch Web Studio",
+  "description": "Transform and render Google Stitch UI projects into live, interactive, production-ready web applications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
