@@ -9,6 +9,7 @@ import {
   Lock,
   ArrowRight,
   Phone,
+  MapPin,
   CheckCircle2,
   Copy,
   Gift,
@@ -274,6 +275,34 @@ export const Footer: React.FC<FooterProps> = ({
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
               The premier destination for authenticated luxury goods, designer apparel, cutting-edge electronics, and lifestyle pieces.
             </p>
+
+            <div className="space-y-3 pt-2">
+              <div className="flex items-start space-x-2 text-slate-300">
+                <MapPin className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
+                <span className="text-xs leading-relaxed">
+                  <strong>Address:</strong> Brand Bazaar, Gundalpet - Chamarajanagar Main road, Near old RTO office, Chamarajanagar - 571313.
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 text-slate-300">
+                <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span className="text-xs">
+                  <strong>Contact:</strong> <a href="tel:9916962786" className="text-white font-bold hover:underline">9916962786</a>
+                </span>
+              </div>
+            </div>
+
+            {/* Google Map Embed */}
+            <div className="w-full h-40 sm:h-44 rounded-2xl overflow-hidden border border-slate-800 shadow-lg mt-3">
+              <iframe
+                title="Brand Bazaar Store Location - Chamarajanagar"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src="https://maps.google.com/maps?q=11.921082302843816,76.93544978631483&z=17&output=embed"
+              ></iframe>
+            </div>
           </div>
 
           {/* Department Links */}

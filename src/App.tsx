@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lock } from 'lucide-react';
+import { Lock, Eye } from 'lucide-react';
 import { Navbar, WishlistToastEvent } from './components/ecommerce/Navbar';
 import { HeroBanner } from './components/ecommerce/HeroBanner';
 import { ProductCatalog } from './components/ecommerce/ProductCatalog';
@@ -12,6 +12,7 @@ import { OrderHistoryModal } from './components/ecommerce/OrderHistoryModal';
 import { Footer } from './components/ecommerce/Footer';
 import { ClientServicesModal, ClientServiceTab } from './components/ecommerce/ClientServicesModal';
 import { OrderSuccessModal } from './components/ecommerce/OrderSuccessModal';
+import { LogoUploadModal } from './components/ecommerce/LogoUploadModal';
 import { INITIAL_PRODUCTS, INITIAL_ORDERS, INITIAL_OFFERS } from './data/mockEcommerce';
 import { sendOrderConfirmationEmail } from './utils/emailNotifier';
 import {
@@ -189,6 +190,7 @@ export default function App() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
   const [lastWishlistEvent, setLastWishlistEvent] = useState<WishlistToastEvent | null>(null);
+
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
     try {
       const saved = localStorage.getItem('bb_current_user');
@@ -212,6 +214,7 @@ export default function App() {
     isOpen: false,
     initialTab: 'faq',
   });
+  const [isLogoUploadOpen, setIsLogoUploadOpen] = useState(false);
 
   const primaryColor = branding.primaryColor || '#4f46e5';
 
@@ -517,7 +520,7 @@ export default function App() {
   const wishlistProducts = products.filter((p) => wishlistIds.has(p.id));
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans antialiased selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans antialiased selection:bg-indigo-500 selection:text-white pb-16 md:pb-0">
       {/* 1. Global Navigation Bar with Dynamic Logo */}
       <Navbar
         cartCount={totalCartCount}
@@ -536,6 +539,7 @@ export default function App() {
         flashSale={offers.flashSale}
         lastWishlistEvent={lastWishlistEvent}
         onClearWishlistToast={() => setLastWishlistEvent(null)}
+        onOpenLogoUpload={() => setIsLogoUploadOpen(true)}
       />
 
       {/* 2. Top Hero Visual Banner (Only visible on All Categories view) */}
@@ -661,6 +665,14 @@ export default function App() {
         isOpen={orderSuccessModal.isOpen}
         onClose={() => setOrderSuccessModal({ isOpen: false, order: null })}
         order={orderSuccessModal.order}
+        primaryColor={primaryColor}
+      />
+
+      <LogoUploadModal
+        isOpen={isLogoUploadOpen}
+        onClose={() => setIsLogoUploadOpen(false)}
+        branding={branding}
+        onSaveBranding={setBranding}
         primaryColor={primaryColor}
       />
 

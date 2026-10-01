@@ -11,6 +11,8 @@ import {
   Timer,
   Flame,
   Percent,
+  Eye,
+  Minimize2,
 } from 'lucide-react';
 import { CategoryFilter, FlashSaleOfferSettings } from '../../types/ecommerce';
 import { formatRupees } from '../../utils/currency';
@@ -69,6 +71,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   flashSale,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Default flash sale configurations if not provided
   const saleConfig = flashSale || {
@@ -135,8 +138,40 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   // Helper formatting for 2-digit clock display
   const padZero = (n: number) => n.toString().padStart(2, '0');
 
+  // Collapsed Minimal Strip to prevent bulky screen fill
+  if (isCollapsed) {
+    return (
+      <div className="bg-slate-900 border-b border-slate-800 text-slate-300 py-2.5 px-3 sm:px-6 text-xs flex items-center justify-between">
+        <div className="flex items-center space-x-2 truncate">
+          <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+          <span className="font-bold text-white">Autumn Drop Catalog</span>
+          <span className="text-slate-500 hidden sm:inline">&bull; Banner Minimized</span>
+        </div>
+        <div className="flex items-center space-x-2 shrink-0">
+          <button
+            onClick={() => setIsCollapsed(false)}
+            className="text-slate-300 hover:text-white font-bold text-[11px] px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-800"
+          >
+            Expand ▾
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative overflow-hidden bg-slate-900 text-white border-b border-slate-800">
+      {/* Top Banner Control Bar (Minimize) */}
+      <div className="relative z-20 max-w-7xl mx-auto px-3 sm:px-6 pt-3 flex items-center justify-end text-xs">
+        <button
+          onClick={() => setIsCollapsed(true)}
+          className="px-2.5 py-1.5 rounded-full text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-400 hover:text-slate-200 border border-white/10 flex items-center space-x-1 transition-all"
+          title="Minimize Hero Banner"
+        >
+          <Minimize2 className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Minimize</span>
+        </button>
+      </div>
       {/* Background ambient lighting */}
       <div
         className="absolute -top-32 -left-32 w-96 h-96 rounded-full blur-3xl opacity-30 pointer-events-none"
@@ -144,17 +179,17 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
       />
       <div className="absolute top-1/2 -right-32 w-96 h-96 rounded-full blur-3xl opacity-20 bg-rose-500 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16 relative z-10 space-y-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6 md:py-8 relative z-10 space-y-4 sm:space-y-6">
         {/* FLASH SALE COUNTDOWN URGENCY STRIP */}
         {saleConfig.enabled && (
-          <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-indigo-500/15 border border-amber-500/30 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
-            <div className="flex items-center space-x-3 text-center sm:text-left">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 text-white flex items-center justify-center shadow-lg shrink-0 animate-bounce">
-                <Flame className="w-5 h-5 fill-current" />
+          <div className="p-3 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-indigo-500/15 border border-amber-500/30 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 shadow-xl">
+            <div className="flex items-center space-x-2.5 sm:space-x-3 text-center sm:text-left">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-500 text-white flex items-center justify-center shadow-lg shrink-0 animate-bounce">
+                <Flame className="w-4 h-4 fill-current" />
               </div>
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-black uppercase tracking-wider text-amber-300">
+                  <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-amber-300">
                     {saleConfig.badgeTitle || '⚡ LIMITED TIME FLASH SALE'}
                   </span>
                   {saleConfig.discountHeadline && (
@@ -163,48 +198,48 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-slate-300 mt-0.5">
+                <p className="text-[11px] sm:text-xs text-slate-300 mt-0.5">
                   {saleConfig.description || 'Luxury catalog prices slashed for a limited window. Free Pan-India express delivery included.'}
                 </p>
               </div>
             </div>
 
             {/* Live Countdown Clock Units */}
-            <div className="flex items-center space-x-2 shrink-0">
-              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider hidden lg:block mr-1">
+            <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
+              <div className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider hidden lg:block mr-1">
                 Ends In:
               </div>
 
               {/* Hours Block */}
               <div className="flex flex-col items-center">
-                <div className="w-12 h-12 rounded-2xl bg-slate-950/80 border border-white/20 text-white font-mono font-black text-lg sm:text-xl flex items-center justify-center shadow-inner">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-slate-950/80 border border-white/20 text-white font-mono font-black text-sm sm:text-xl flex items-center justify-center shadow-inner">
                   {padZero(timeLeft.hours)}
                 </div>
-                <span className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 mt-1">
+                <span className="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider text-slate-400 mt-0.5 sm:mt-1">
                   Hours
                 </span>
               </div>
 
-              <span className="font-mono text-xl font-bold text-amber-400 pb-4">:</span>
+              <span className="font-mono text-base sm:text-xl font-bold text-amber-400 pb-3 sm:pb-4">:</span>
 
               {/* Minutes Block */}
               <div className="flex flex-col items-center">
-                <div className="w-12 h-12 rounded-2xl bg-slate-950/80 border border-white/20 text-amber-300 font-mono font-black text-lg sm:text-xl flex items-center justify-center shadow-inner">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-slate-950/80 border border-white/20 text-amber-300 font-mono font-black text-sm sm:text-xl flex items-center justify-center shadow-inner">
                   {padZero(timeLeft.minutes)}
                 </div>
-                <span className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 mt-1">
+                <span className="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider text-slate-400 mt-0.5 sm:mt-1">
                   Mins
                 </span>
               </div>
 
-              <span className="font-mono text-xl font-bold text-amber-400 pb-4">:</span>
+              <span className="font-mono text-base sm:text-xl font-bold text-amber-400 pb-3 sm:pb-4">:</span>
 
               {/* Seconds Block */}
               <div className="flex flex-col items-center">
-                <div className="w-12 h-12 rounded-2xl bg-slate-950/80 border border-rose-500/40 text-rose-400 font-mono font-black text-lg sm:text-xl flex items-center justify-center shadow-inner animate-pulse">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-slate-950/80 border border-rose-500/40 text-rose-400 font-mono font-black text-sm sm:text-xl flex items-center justify-center shadow-inner animate-pulse">
                   {padZero(timeLeft.seconds)}
                 </div>
-                <span className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 mt-1">
+                <span className="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-wider text-slate-400 mt-0.5 sm:mt-1">
                   Secs
                 </span>
               </div>
@@ -217,68 +252,68 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }, 50);
                 }}
-                className="ml-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white font-extrabold text-xs shadow-lg transition-all transform hover:scale-105 active:scale-95 flex items-center space-x-1 shrink-0"
+                className="ml-1 sm:ml-2 px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white font-extrabold text-[11px] sm:text-xs shadow-lg transition-all transform hover:scale-105 active:scale-95 flex items-center space-x-1 shrink-0"
               >
                 <span>{saleConfig.ctaText || 'Claim Deal'}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               </button>
             </div>
           </div>
         )}
 
         {/* Main Grid Hero Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
           {/* Left Column Copy */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-indigo-300 border border-white/15 backdrop-blur-xs">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <div className="lg:col-span-7 space-y-4 sm:space-y-6">
+            <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-bold bg-white/10 text-indigo-300 border border-white/15 backdrop-blur-xs">
+              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />
               <span>Autumn Luxury Drop &bull; Brand Bazaar Original</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08]">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1]">
               Where Every Brand Tells{' '}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-rose-400 to-indigo-300">
                 A Story of Excellence.
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-300 max-w-xl font-normal leading-relaxed">
+            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-xl font-normal leading-relaxed">
               Explore thousands of verified designer timepieces, Italian leathercraft, high-performance footwear, spatial audio, and architectural home decor.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
               <button
                 onClick={() => onExplore('Fashion')}
-                className="px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold text-slate-950 bg-white hover:bg-slate-100 shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 flex items-center space-x-2"
+                className="px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold text-slate-950 bg-white hover:bg-slate-100 shadow-xl transition-all duration-200 hover:scale-105 active:scale-95 flex items-center space-x-2"
               >
                 <span>Shop New Arrivals</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
 
               <button
                 onClick={() => onExplore('Accessories')}
-                className="px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold border border-white/20 bg-white/5 hover:bg-white/10 text-white backdrop-blur-xs transition-colors flex items-center space-x-2"
+                className="px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold border border-white/20 bg-white/5 hover:bg-white/10 text-white backdrop-blur-xs transition-colors flex items-center space-x-2"
               >
                 <span>Explore Timepieces</span>
               </button>
             </div>
 
             {/* Quick Micro Badges */}
-            <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-white/10 text-xs text-slate-300">
+            <div className="pt-4 sm:pt-6 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 border-t border-white/10 text-[11px] sm:text-xs text-slate-300">
               <div className="flex items-center space-x-2">
-                <Truck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 shrink-0" />
                 <span>Express Delivery</span>
               </div>
               <div className="flex items-center space-x-2">
-                <ShieldCheck className="w-4 h-4 text-indigo-400 shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400 shrink-0" />
                 <span>100% Certified Original</span>
               </div>
               <div className="flex items-center space-x-2">
-                <RotateCcw className="w-4 h-4 text-indigo-400 shrink-0" />
+                <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400 shrink-0" />
                 <span>Easy Exchange</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Headphones className="w-4 h-4 text-rose-400 shrink-0" />
+                <Headphones className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-400 shrink-0" />
                 <span>24/7 VIP Concierge</span>
               </div>
             </div>
@@ -294,7 +329,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 src={slide.image}
                 alt={slide.title}
                 key={slide.id}
-                className="w-full h-80 sm:h-96 object-cover object-center group-hover:scale-105 transition-all duration-700 animate-in fade-in"
+                className="w-full h-56 sm:h-72 object-cover object-center group-hover:scale-105 transition-all duration-700 animate-in fade-in"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent flex flex-col justify-end p-6">
                 <div className="flex items-center justify-between gap-3">
