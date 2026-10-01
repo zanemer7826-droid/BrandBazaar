@@ -11,8 +11,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './'),
-      // This forces Vite and Rolldown to find react-is directly in your project node_modules
-      'react-is': 'react-is'
+    },
+  },
+  build: {
+    rolldownOptions: {
+      // This tells the compiler to treat react-is as an external runtime item, preventing the crash
+      external: ['react-is'],
     },
   },
 })
